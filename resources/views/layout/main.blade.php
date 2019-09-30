@@ -52,22 +52,12 @@
                     </div>
                     <div class="row text-center my-4">
                         <div class="col-12">
-                            <a href="/films/{{$film['film']->code}}">
-                                <button type="button" class="btn btn-primary m-0">Купить билет</button>
+                            <a href="/timetables/{{$film['film']->code}}">
+                                <button type="button" class="btn btn-primary m-0">Выбрать сеанс</button>
                             </a>
                         </div>
                     </div>
                 </div>
         @endforeach
-    </section>
-    <section class="container hall">
-        <div class="row">
-            <div class="col">
-                {{--            Стилизовать псевдоэлементы before и after padding-top, content,text-align--}}
-                <input type="checkbox" class="custom-control-input" id="customCheck1">
-                <label class="custom-control-label" for="customCheck1"></label>
-                <span class="custom-control-span">10</span>
-            </div>
-        </div>
     </section>
 @endsection

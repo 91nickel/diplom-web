@@ -17,7 +17,7 @@
                 </div>
                 <div class="row my-3 mx-0">
                     @foreach($times as $time)
-                        <a class="col-2 btn btn-warning p-2" href="/timetables/{{$time['id']}}">
+                        <a class="col-2 btn btn-warning p-2" href="/timetables/order/{{$time['id']}}">
                             {{$time['value']}}
                         </a>
                     @endforeach

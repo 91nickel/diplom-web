@@ -12,11 +12,25 @@
 */
 
 Route::get('/', 'PagesController@index');
+
+Route::get('/films', 'FilmsController@list');
+Route::get('/timetables', 'TimetablesController@list');
+Route::get('/timetables/{code}', 'TimetablesController@list');
+
 Route::get('/films/{code}', 'FilmsController@show');
-Route::get('/timetables/{id}', 'TimetablesController@show');
-Route::resource('/admin/halls', 'HallsController');
-Route::resource('/admin/films', 'FilmsController');
-Route::resource('/admin/timetables', 'TimetablesController');
+Route::get('/timetables/order/{id}', 'TimetablesController@show');
+
+Route::group(['middleware' => ['checkRole'], 'prefix'=> 'admin'], function () {
+    Route::resource('/halls', 'HallsController');
+    Route::resource('/films', 'FilmsController');
+    Route::resource('/timetables', 'TimetablesController');
+    Route::resource('/orders', 'OrdersController');
+    Route::resource('/users', 'UsersController');
+});
 
 Route::get('/api/makeOrder/{id}', 'OrdersController@make');
 Route::post('/api/addOrder', 'OrdersController@store');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');

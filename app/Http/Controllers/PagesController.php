@@ -27,15 +27,15 @@ class PagesController extends Controller
             $times = $film->timetables;
 
             foreach ($times as $time) {
-                $arResult['films'][$key]['times'][] = date('H:i',DateTime::createFromFormat('Y-m-d H:i:s', $time->start)->format('U'));
+                $arResult['films'][$key]['times'][] = date('H:i', DateTime::createFromFormat('Y-m-d H:i:s', $time->start)->format('U'));
             }
         }
 
         return view('layout.main', $arResult);
     }
 
-    public function halls()
-    {
-        return view('admin.hall.index', ['halls' => Hall::all()]);
-    }
+//    public function halls()
+//    {
+//        return view('admin.hall.index', ['halls' => Hall::all()]);
+//    }
 }

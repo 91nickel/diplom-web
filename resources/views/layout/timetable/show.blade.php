@@ -2,7 +2,8 @@
 
 @section('content')
     <p id="timetable-id" style="display:none;">{{$timetable->id}}</p>
-    <p id="token">{{ csrf_field() }}</p>
+    <p id="user-id" style="display:none;">{{Auth::user()->id}}</p>
+    <p id="token" style="display:none;">{{ csrf_field() }}</p>
     <section class="container">
         <div class="row my-4">
             <div class="col-3"><h2>{{$film->name}}</h2></div>
@@ -143,7 +144,7 @@
                             row: el.dataset.row,
                             seat: el.dataset.seat,
                             timetable_id: +$('#timetable-id')[0].innerText,
-                            user_id: 1
+                            user_id: +$('#user-id')[0].innerText
                         }
                     });
                     data = JSON.stringify(data);

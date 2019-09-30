@@ -139,4 +139,17 @@ class TimetablesController extends Controller
         $timetable->delete();
         return redirect()->route('timetables.index');
     }
+
+    public function list($code = null)
+    {
+        if (!$code) {
+            $arResult['timetables'] = Timetable::all();
+        } else {
+            $arResult['timetables'] = Timetable::whereHas('film', function ($q) use ($code) {
+                $q->where('code', $code);
+
+            })->get();
+        }
+        return view('layout.timetable.list', $arResult);
+    }
 }

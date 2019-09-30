@@ -119,6 +119,12 @@ class FilmsController extends Controller
         return redirect()->route('films.index');
     }
 
+    public function list()
+    {
+        $arResult['films'] = Film::all();
+        return view('layout.film.list', $arResult);
+    }
+
     public static function convertDateToTime($date)
     {
         return date('H:i', DateTime::createFromFormat('Y-m-d H:i:s', $date)->format('U'));

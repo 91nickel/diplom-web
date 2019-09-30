@@ -6,6 +6,7 @@ use App\Film;
 use App\Hall;
 use App\Order;
 use App\Timetable;
+use App\User;
 use Facade\FlareClient\Time\Time;
 use Illuminate\Http\Request;
 
@@ -18,7 +19,11 @@ class OrdersController extends Controller
      */
     public function index()
     {
-        //
+        $arResult['orders'] = Order::all();
+        $arResult['timetables'] = Timetable::all();
+        $arResult['users'] = User::all();
+
+        return view('admin.order.index', $arResult);
     }
 
     /**
@@ -39,17 +44,28 @@ class OrdersController extends Controller
      */
     public function store(Request $request)
     {
-        $newOrders = json_decode($request->data);
-        foreach ($newOrders as $item) {
-            Order::create([
-                'row' => $item->row,
-                'seat' => $item->seat,
-                'timetable_id' => $item->timetable_id,
-                'user_id' => $item->user_id,
-            ]);
+        if (!$request->handle) {
+            $newOrders = json_decode($request->data);
+            foreach ($newOrders as $item) {
+                Order::create([
+                    'row' => $item->row,
+                    'seat' => $item->seat,
+                    'timetable_id' => $item->timetable_id,
+                    'user_id' => $item->user_id,
+                ]);
+            }
+            $arResult = $this->make($request->timetable_id);
+            return $arResult;
         }
-        $arResult = $this->make($request->timetable_id);
-        return $arResult;
+
+        $this->validate($request, [
+            'user_id' => 'required|integer',
+            'timetable_id' => 'required|integer',
+            'row' => 'required|integer',
+            'seat' => 'required|integer',
+        ]);
+        Order::create($request->all());
+        return redirect()->route('orders.index');
     }
 
     /**
@@ -66,35 +82,65 @@ class OrdersController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param int $id
-     * @return \Illuminate\Http\Response
+     * @param Order $order
+     * @return void
      */
-    public function edit($id)
+    public function edit(Order $order)
     {
-        //
+        $arResult['order'] = $order;
+        $arResult['timetables'] = Timetable::all();
+        $arResult['users'] = User::all();
+        return view('admin.order.edit', $arResult);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param \Illuminate\Http\Request $request
-     * @param int $id
-     * @return \Illuminate\Http\Response
+     * @param Order $order
+     * @return void
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Order $order)
     {
-        //
+        $this->validate($request, [
+            'timetable_id' => 'required|integer',
+            'user_id' => 'required|integer',
+            'row' => 'required|integer',
+            'seat' => 'required|integer',
+        ]);
+        //Проверим есть ли точно такой же заказ, чтобы избежать дублирования
+        $findOrder = Order::where('timetable_id', $request->timetable_id)
+            ->where('row', $request->row)
+            ->where('seat', $request->seat)
+            ->get();
+        if ($findOrder->count() <= 1 || $findOrder === null) {
+            //Проверим есть ли такой ряд и такое место в указанном зале
+            //dd($order->timetable->hall->rows >= intval($request->row));
+            if ($order->timetable->hall->rows >= intval($request->row)
+                && $order->timetable->hall->seats >= intval($request->seat)
+                && intval($request->row) > 0
+                && intval($request->seat) > 0) {
+
+                $order->update($request->all());
+                return redirect()->route('orders.index');
+
+            }
+        }
+        return redirect()->route('orders.index');
+
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param int $id
+     * @param Order $order
      * @return \Illuminate\Http\Response
+     * @throws \Exception
      */
-    public function destroy($id)
+    public function destroy(Order $order)
     {
-        //
+        $order->delete();
+        return redirect()->route('orders.index');
     }
 
     public function make($id)
