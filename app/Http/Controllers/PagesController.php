@@ -4,11 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\FilmsController;
 
+use App\Order;
 use DateTime;
 use Illuminate\Http\Request;
 use App\Hall;
 use App\Film;
 use App\Timetable;
+use Illuminate\Support\Facades\Auth;
 
 class PagesController extends Controller
 {
@@ -34,8 +36,14 @@ class PagesController extends Controller
         return view('layout.main', $arResult);
     }
 
-//    public function halls()
-//    {
-//        return view('admin.hall.index', ['halls' => Hall::all()]);
-//    }
+    public function order($id)
+    {
+        $order = Order::find($id);
+        if ($order->user_id === Auth::user()->id) {
+            $arResult['order'] = $order;
+            return view('layout.order.index', $arResult);
+        } else {
+            return redirect()->route('home');
+        }
+    }
 }

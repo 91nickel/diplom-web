@@ -20,12 +20,15 @@ Route::get('/timetables/{code}', 'TimetablesController@list');
 Route::get('/films/{code}', 'FilmsController@show');
 Route::get('/timetables/order/{id}', 'TimetablesController@show');
 
-Route::group(['middleware' => ['checkRole'], 'prefix'=> 'admin'], function () {
+Route::group(['middleware' => ['checkRole'], 'prefix' => 'admin'], function () {
     Route::resource('/halls', 'HallsController');
     Route::resource('/films', 'FilmsController');
     Route::resource('/timetables', 'TimetablesController');
     Route::resource('/orders', 'OrdersController');
     Route::resource('/users', 'UsersController');
+});
+Route::group(['middleware' => ['auth']], function () {
+    Route::get('/home/orders/{id}', 'PagesController@order');
 });
 
 Route::get('/api/makeOrder/{id}', 'OrdersController@make');
