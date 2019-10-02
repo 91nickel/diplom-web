@@ -26,6 +26,7 @@ Route::group(['middleware' => ['checkRole'], 'prefix' => 'admin'], function () {
     Route::resource('/timetables', 'TimetablesController');
     Route::resource('/orders', 'OrdersController');
     Route::resource('/users', 'UsersController');
+    Route::resource('/images', 'ImagesController');
 });
 Route::group(['middleware' => ['auth']], function () {
     Route::get('/home/orders/{id}', 'PagesController@order');

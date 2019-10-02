@@ -22,4 +22,9 @@ class Film extends Model
     {
         return $this->hasMany('App\Timetable');
     }
+
+    public function images()
+    {
+        return $this->belongsToMany('App\Image');
+    }
 }

@@ -6,7 +6,14 @@
         </div>
         <div class="row">
             <div class="col mr-2">
-                <img class="img-fluid" src="/images/test-photo-announce.jpg" alt="">
+                @if($images->isEmpty())
+                    <img class="img-fluid" src="{{asset('/storage/' . 'images/no-image.jpg')}}" alt="">
+                @else
+                    @foreach($images as $key => $image)
+                        <img class="img-fluid" src="{{asset('/storage/'.$image->link)}}" alt=""
+                             @if($key > 0) style="display:none;" @endif>
+                    @endforeach
+                @endif
             </div>
             <div class="col ml-2">
                 <div class="row mb-3 mx-0">

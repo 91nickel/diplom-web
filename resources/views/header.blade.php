@@ -9,6 +9,7 @@
             <li class="col border"><a href="/admin/films">Управление фильмами</a></li>
             <li class="col border"><a href="/admin/halls">Управление залами</a></li>
             <li class="col border"><a href="/admin/orders">Управление заказами</a></li>
+            <li class="col border"><a href="/admin/images">Управление изображениями</a></li>
         @endif
         @if(Auth::user())
             <li class="col border"><a href="/home">Личный кабинет</a></li>

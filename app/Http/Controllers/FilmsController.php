@@ -69,6 +69,7 @@ class FilmsController extends Controller
             $arResult['times'][$key]['id'] = $time->id;
             $arResult['times'][$key]['value'] = FilmsController::convertDateToTime($time->start);
         }
+        $arResult['images'] = $film->images;
         return view('layout.film.index', $arResult);
     }
 
@@ -116,6 +117,7 @@ class FilmsController extends Controller
     {
         Timetable::where('film_id', $film->id)->delete();
         $film->delete();
+        DB::table('film_image')->where('film_id', $film->id)->delete();
         return redirect()->route('films.index');
     }
 
