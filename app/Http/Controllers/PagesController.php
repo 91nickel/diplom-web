@@ -25,6 +25,7 @@ class PagesController extends Controller
             $arResult['films'][$key]['film'] = $film;
 
             $arResult['films'][$key]['times'] = [];
+            $arResult['headFilm'] = Film::take(1)->get()[0];
 
             $times = $film->timetables;
 
