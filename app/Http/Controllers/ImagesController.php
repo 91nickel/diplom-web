@@ -83,10 +83,15 @@ class ImagesController extends Controller
      * @param \Illuminate\Http\Request $request
      * @param int $id
      * @return \Illuminate\Http\Response
+     * @throws \Illuminate\Validation\ValidationException
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->validate($request, [
+            'film_id' => 'required|integer',
+        ]);
+        DB::table('film_image')->where('image_id', $id)->update(['film_id'=>$request->film_id]);
+        return redirect()->route('images.index');
     }
 
     /**

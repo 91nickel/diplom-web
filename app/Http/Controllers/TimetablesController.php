@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Timetable;
 use App\Hall;
 use App\Film;
+use Illuminate\Support\Facades\Auth;
 
 class TimetablesController extends Controller
 {
@@ -75,6 +76,9 @@ class TimetablesController extends Controller
      */
     public function show($id)
     {
+        if(!Auth::user()){
+            return redirect()->route('home');
+        }
         $timetable = Timetable::find($id);
 
         $time = FilmsController::convertDateToTime($timetable->start);

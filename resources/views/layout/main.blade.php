@@ -21,7 +21,9 @@
                     <button class="col-2 btn btn-warning p-2">15:00</button>
                 </div>
                 <div class="row my-3 mx-0">
-                    <a href="/films/{{$headFilm->code}}"><button type="button" class="btn btn-primary">Выбрать сеанс</button></a>
+                    <a href="/films/{{$headFilm->code}}">
+                        <button type="button" class="btn btn-primary">Выбрать сеанс</button>
+                    </a>
                 </div>
             </div>
         </div>
@@ -34,7 +36,14 @@
             @foreach($films as $film)
                 <div class="col-3">
                     <div class="row text-center justify-content-start">
-                        <img class="col-12 img-fluid" src="/images/test-catalog-1.jpg">
+                        <img class="col-12 img-fluid" src=
+
+                        @if($film['film']->images->isEmpty())
+                            "{{asset('/storage/' . 'images/no-image.jpg')}}" style="width: 205px; flex: none; margin: auto;"
+                        @else
+                            "{{asset('/storage/' . $film['film']->images[0]->link)}}"
+                        @endif
+                        >
                     </div>
                     <div class="row">
                         <div class="col-12 text-center"><h5 class="m-3">{{$film['film']->name}}</h5></div>
