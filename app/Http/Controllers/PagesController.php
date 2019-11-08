@@ -33,7 +33,6 @@ class PagesController extends Controller
                 $arResult['films'][$key]['times'][] = date('H:i', DateTime::createFromFormat('Y-m-d H:i:s', $time->start)->format('U'));
             }
         }
-
         return view('layout.main', $arResult);
     }
 
